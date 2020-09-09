@@ -5,6 +5,8 @@ import com.eci.innovation.storerun.dto.ItemsDTO;
 import com.eci.innovation.storerun.mapper.ItemsMapper;
 import com.eci.innovation.storerun.service.ItemsService;
 
+import springfox.documentation.annotations.ApiIgnore;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,6 +67,7 @@ public class ItemsRestController {
     }
 
     @PostMapping(value = "/save")
+    @ApiIgnore
     public ResponseEntity<?> save(@RequestBody
     ItemsDTO itemsDTO) {
         log.debug("Request to save Items: {}", itemsDTO);
@@ -82,6 +85,7 @@ public class ItemsRestController {
     }
 
     @PutMapping(value = "/update")
+    @ApiIgnore
     public ResponseEntity<?> update(@RequestBody
     ItemsDTO itemsDTO) {
         log.debug("Request to update Items: {}", itemsDTO);
@@ -99,6 +103,7 @@ public class ItemsRestController {
     }
 
     @DeleteMapping(value = "/delete/{itemId}")
+    @ApiIgnore
     public ResponseEntity<?> delete(@PathVariable("itemId")
     Long itemId) throws Exception {
         log.debug("Request to delete Items");
@@ -117,6 +122,7 @@ public class ItemsRestController {
     }
 
     @GetMapping(value = "/count")
+    @ApiIgnore
     public ResponseEntity<?> count() {
         return ResponseEntity.ok().body(itemsService.count());
     }

@@ -5,6 +5,8 @@ import com.eci.innovation.storerun.dto.DiscountsDTO;
 import com.eci.innovation.storerun.mapper.DiscountsMapper;
 import com.eci.innovation.storerun.service.DiscountsService;
 
+import springfox.documentation.annotations.ApiIgnore;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -68,6 +70,7 @@ public class DiscountsRestController {
     }
 
     @PostMapping(value = "/save")
+    @ApiIgnore
     public ResponseEntity<?> save(@RequestBody
     DiscountsDTO discountsDTO) {
         log.debug("Request to save Discounts: {}", discountsDTO);
@@ -87,6 +90,7 @@ public class DiscountsRestController {
     }
 
     @PutMapping(value = "/update")
+    @ApiIgnore
     public ResponseEntity<?> update(@RequestBody
     DiscountsDTO discountsDTO) {
         log.debug("Request to update Discounts: {}", discountsDTO);
@@ -106,6 +110,7 @@ public class DiscountsRestController {
     }
 
     @DeleteMapping(value = "/delete/{discountId}")
+    @ApiIgnore
     public ResponseEntity<?> delete(@PathVariable("discountId")
     Long discountId) throws Exception {
         log.debug("Request to delete Discounts");
@@ -124,6 +129,7 @@ public class DiscountsRestController {
     }
 
     @GetMapping(value = "/count")
+    @ApiIgnore
     public ResponseEntity<?> count() {
         return ResponseEntity.ok().body(discountsService.count());
     }

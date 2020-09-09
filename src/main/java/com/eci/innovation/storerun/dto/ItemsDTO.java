@@ -1,5 +1,6 @@
 package com.eci.innovation.storerun.dto;
 
+import com.eci.innovation.storerun.domain.Discounts;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -10,8 +11,9 @@ import org.slf4j.LoggerFactory;
 import java.io.Serializable;
 
 import java.sql.*;
-
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -28,9 +30,17 @@ public class ItemsDTO implements Serializable {
     private Long itemQuantity;
     private String name;
     private Double price;
-    private Long categoryId_Categories;
+    private List<DiscountsDTO> discountses = new ArrayList<DiscountsDTO>(0);
 
-    public String getDescription() {
+    public List<DiscountsDTO> getDiscountses() {
+		return discountses;
+	}
+
+	public void setDiscountses(List<DiscountsDTO> discountses) {
+		this.discountses = discountses;
+	}
+
+	public String getDescription() {
         return description;
     }
 
@@ -78,15 +88,7 @@ public class ItemsDTO implements Serializable {
         this.price = price;
     }
 
-    public Long getCategoryId_Categories() {
-        return categoryId_Categories;
-    }
-
-    public void setCategoryId_Categories(Long categoryId_Categories) {
-        this.categoryId_Categories = categoryId_Categories;
-    }
-
-    @Override
+	@Override
     public String toString() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);

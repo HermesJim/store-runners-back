@@ -13,7 +13,7 @@ import javax.validation.constraints.*;
 *
 */
 @Entity
-@Table(name = "discounts", schema = "${schema}")
+@Table(name = "discounts", schema = "shoprun")
 public class Discounts implements java.io.Serializable {
     @NotNull
     private Long discountId;

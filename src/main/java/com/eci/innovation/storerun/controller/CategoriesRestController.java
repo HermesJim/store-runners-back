@@ -5,6 +5,9 @@ import com.eci.innovation.storerun.dto.CategoriesDTO;
 import com.eci.innovation.storerun.mapper.CategoriesMapper;
 import com.eci.innovation.storerun.service.CategoriesService;
 
+import springfox.documentation.annotations.ApiIgnore;
+
+import org.hibernate.validator.internal.IgnoreForbiddenApisErrors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,8 +69,9 @@ public class CategoriesRestController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
+    
     @PostMapping(value = "/save")
+    @ApiIgnore
     public ResponseEntity<?> save(@RequestBody
     CategoriesDTO categoriesDTO) {
         log.debug("Request to save Categories: {}", categoriesDTO);
@@ -87,6 +91,7 @@ public class CategoriesRestController {
     }
 
     @PutMapping(value = "/update")
+    @ApiIgnore
     public ResponseEntity<?> update(@RequestBody
     CategoriesDTO categoriesDTO) {
         log.debug("Request to update Categories: {}", categoriesDTO);
@@ -106,6 +111,7 @@ public class CategoriesRestController {
     }
 
     @DeleteMapping(value = "/delete/{categoryId}")
+    @ApiIgnore
     public ResponseEntity<?> delete(@PathVariable("categoryId")
     Long categoryId) throws Exception {
         log.debug("Request to delete Categories");
@@ -124,6 +130,7 @@ public class CategoriesRestController {
     }
 
     @GetMapping(value = "/count")
+    @ApiIgnore
     public ResponseEntity<?> count() {
         return ResponseEntity.ok().body(categoriesService.count());
     }

@@ -1,5 +1,6 @@
 package com.eci.innovation.storerun.dto;
 
+import com.eci.innovation.storerun.domain.Items;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -10,8 +11,9 @@ import org.slf4j.LoggerFactory;
 import java.io.Serializable;
 
 import java.sql.*;
-
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -27,8 +29,17 @@ public class CategoriesDTO implements Serializable {
     private String description;
     private Long location;
     private String name;
+    private List<ItemsDTO> itemses  = new ArrayList<ItemsDTO>(0);
 
-    public Long getCategoryId() {
+	public List<ItemsDTO> getItemses() {
+		return itemses;
+	}
+
+	public void setItemses(List<ItemsDTO> itemses) {
+		this.itemses = itemses;
+	}
+
+	public Long getCategoryId() {
         return categoryId;
     }
 

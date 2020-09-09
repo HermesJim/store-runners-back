@@ -15,7 +15,7 @@ import javax.validation.constraints.*;
 *
 */
 @Entity
-@Table(name = "categories", schema = "${schema}")
+@Table(name = "categories", schema = "shoprun")
 public class Categories implements java.io.Serializable {
     @NotNull
     private Long categoryId;
