@@ -29,6 +29,7 @@ public class CategoriesDTO implements Serializable {
     private String description;
     private Long location;
     private String name;
+    private String webImage;
     private List<ItemsDTO> itemses  = new ArrayList<ItemsDTO>(0);
 
 	public List<ItemsDTO> getItemses() {
@@ -77,9 +78,17 @@ public class CategoriesDTO implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
+    }    
 
-    @Override
+    public String getWebImage() {
+		return webImage;
+	}
+
+	public void setWebImage(String webImage) {
+		this.webImage = webImage;
+	}
+
+	@Override
     public String toString() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);

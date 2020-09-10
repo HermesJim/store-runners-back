@@ -3,6 +3,7 @@ package com.eci.innovation.storerun.controller;
 import com.eci.innovation.storerun.domain.*;
 import com.eci.innovation.storerun.dto.ItemsDTO;
 import com.eci.innovation.storerun.mapper.ItemsMapper;
+import com.eci.innovation.storerun.service.CategoriesService;
 import com.eci.innovation.storerun.service.ItemsService;
 
 import io.swagger.annotations.Api;
@@ -35,6 +36,8 @@ public class ItemsRestController {
     @Autowired
     private ItemsService itemsService;
     @Autowired
+    private CategoriesService categoriesService;
+    @Autowired
     private ItemsMapper itemsMapper;
 
     @GetMapping(value = "/findById/{itemId}")
@@ -46,6 +49,21 @@ public class ItemsRestController {
             Items items = itemsService.findById(itemId).get();
 
             return ResponseEntity.ok().body(itemsMapper.itemsToItemsDTO(items));
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    
+    @GetMapping(value = "/findItemsByCategoryId/{categoryId}")
+    public ResponseEntity<?> findByCategoryId(@PathVariable("categoryId")
+    Long categoryId) {
+        log.debug("Request to findByCategoryId() Items");
+
+        try {
+            Categories category = categoriesService.findById(categoryId).get();
+            return ResponseEntity.ok().body(itemsMapper.listItemsToListItemsDTO(category.getItemses()));
         } catch (Exception e) {
             log.error(e.getMessage(), e);
 

@@ -8,6 +8,10 @@ import com.eci.innovation.storerun.service.ShoppingCarService;
 import io.swagger.annotations.Api;
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -88,6 +92,26 @@ public class ShoppingCarRestController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+    
+    @PostMapping(value = "/optimize")
+    public ResponseEntity<?> optimize(@RequestBody
+    List<ShoppingCarDTO> shoppingCarDTOs) {
+        log.debug("Request to optimize ShoppingCar: {}", shoppingCarDTOs);
+
+        try {
+            List<ShoppingCar> shoppingCars = shoppingCarMapper.listShoppingCarDTOToListShoppingCar(shoppingCarDTOs);
+            Collections.sort(shoppingCars, (a, b) -> a.getPosition().compareTo(b.getPosition()));            
+
+            return ResponseEntity.ok()
+                                 .body(shoppingCarMapper.listShoppingCarToListShoppingCarDTO(
+                                		 shoppingCars));
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 
     @PutMapping(value = "/update")
     public ResponseEntity<?> update(@RequestBody

@@ -23,6 +23,7 @@ public class Categories implements java.io.Serializable {
     private String description;
     private Long location;
     private String name;
+    private String webImage;
     private List<Items> itemses = new ArrayList<Items>(0);
 
     public Categories() {
@@ -84,6 +85,15 @@ public class Categories implements java.io.Serializable {
         this.name = name;
     }
 
+    @Column(name = "web_image")
+	public String getWebImage() {
+		return webImage;
+	}
+
+	public void setWebImage(String webImage) {
+		this.webImage = webImage;
+	}
+	
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "categories")
     public List<Items> getItemses() {
         return this.itemses;
