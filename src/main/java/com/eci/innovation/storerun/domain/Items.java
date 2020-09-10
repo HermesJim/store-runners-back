@@ -26,7 +26,8 @@ public class Items implements java.io.Serializable {
     private Long itemQuantity;
     private String name;
     private Double price;
-    private List<Discounts> discountses = new ArrayList<Discounts>(0);
+    private String webImage;   
+	private List<Discounts> discountses = new ArrayList<Discounts>(0);
 
     public Items() {
     }
@@ -108,6 +109,16 @@ public class Items implements java.io.Serializable {
     public void setPrice(Double price) {
         this.price = price;
     }
+    
+    @Column(name = "web_image")
+    public String getWebImage() {
+		return webImage;
+	}
+
+	public void setWebImage(String webImage) {
+		this.webImage = webImage;
+	}
+
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "items")
     public List<Discounts> getDiscountses() {

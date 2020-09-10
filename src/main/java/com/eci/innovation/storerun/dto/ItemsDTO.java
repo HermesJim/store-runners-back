@@ -30,6 +30,7 @@ public class ItemsDTO implements Serializable {
     private Long itemQuantity;
     private String name;
     private Double price;
+    private String webImage;
     private List<DiscountsDTO> discountses = new ArrayList<DiscountsDTO>(0);
 
     public List<DiscountsDTO> getDiscountses() {
@@ -86,7 +87,15 @@ public class ItemsDTO implements Serializable {
 
     public void setPrice(Double price) {
         this.price = price;
-    }
+    }       
+
+	public String getWebImage() {
+		return webImage;
+	}
+
+	public void setWebImage(String webImage) {
+		this.webImage = webImage;
+	}
 
 	@Override
     public String toString() {

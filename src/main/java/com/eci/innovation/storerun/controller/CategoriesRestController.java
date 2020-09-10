@@ -5,6 +5,7 @@ import com.eci.innovation.storerun.dto.CategoriesDTO;
 import com.eci.innovation.storerun.mapper.CategoriesMapper;
 import com.eci.innovation.storerun.service.CategoriesService;
 
+import io.swagger.annotations.Api;
 import springfox.documentation.annotations.ApiIgnore;
 
 import org.hibernate.validator.internal.IgnoreForbiddenApisErrors;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/categories")
 @CrossOrigin(origins = "*")
+@Api(value = "Categories", description = "Services to get Store Runners Categories Data")
 public class CategoriesRestController {
     private static final Logger log = LoggerFactory.getLogger(CategoriesRestController.class);
     @Autowired
