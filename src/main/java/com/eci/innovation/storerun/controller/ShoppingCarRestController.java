@@ -1,9 +1,9 @@
 package com.eci.innovation.storerun.controller;
 
 import com.eci.innovation.storerun.domain.*;
-import com.eci.innovation.storerun.dto.DiscountsDTO;
-import com.eci.innovation.storerun.mapper.DiscountsMapper;
-import com.eci.innovation.storerun.service.DiscountsService;
+import com.eci.innovation.storerun.dto.ShoppingCarDTO;
+import com.eci.innovation.storerun.mapper.ShoppingCarMapper;
+import com.eci.innovation.storerun.service.ShoppingCarService;
 
 import io.swagger.annotations.Api;
 import springfox.documentation.annotations.ApiIgnore;
@@ -27,28 +27,27 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/api/discounts")
+@RequestMapping("/api/shoppingCar")
 @CrossOrigin(origins = "*")
-@Api(tags = "Discounts", description = "Services to get Store Runners Discounts Data")
-public class DiscountsRestController {
-    private static final Logger log = LoggerFactory.getLogger(DiscountsRestController.class);
+@Api(tags = "Shopping Cart", description = "Services to get Store Runners Shopping Cart Data")
+public class ShoppingCarRestController {
+    private static final Logger log = LoggerFactory.getLogger(ShoppingCarRestController.class);
     @Autowired
-    private DiscountsService discountsService;
+    private ShoppingCarService shoppingCarService;
     @Autowired
-    private DiscountsMapper discountsMapper;
+    private ShoppingCarMapper shoppingCarMapper;
 
-    @GetMapping(value = "/findById/{discountId}")
-    public ResponseEntity<?> findById(
-        @PathVariable("discountId")
-    Long discountId) {
-        log.debug("Request to findById() Discounts");
+    @GetMapping(value = "/findById/{cartId}")
+    public ResponseEntity<?> findById(@PathVariable("cartId")
+    Long cartId) {
+        log.debug("Request to findById() ShoppingCar");
 
         try {
-            Discounts discounts = discountsService.findById(discountId).get();
+            ShoppingCar shoppingCar = shoppingCarService.findById(cartId).get();
 
             return ResponseEntity.ok()
-                                 .body(discountsMapper.discountsToDiscountsDTO(
-                    discounts));
+                                 .body(shoppingCarMapper.shoppingCarToShoppingCarDTO(
+                    shoppingCar));
         } catch (Exception e) {
             log.error(e.getMessage(), e);
 
@@ -58,12 +57,12 @@ public class DiscountsRestController {
 
     @GetMapping(value = "/findAll")
     public ResponseEntity<?> findAll() {
-        log.debug("Request to findAll() Discounts");
+        log.debug("Request to findAll() ShoppingCar");
 
         try {
             return ResponseEntity.ok()
-                                 .body(discountsMapper.listDiscountsToListDiscountsDTO(
-                    discountsService.findAll()));
+                                 .body(shoppingCarMapper.listShoppingCarToListShoppingCarDTO(
+                    shoppingCarService.findAll()));
         } catch (Exception e) {
             log.error(e.getMessage(), e);
 
@@ -72,18 +71,17 @@ public class DiscountsRestController {
     }
 
     @PostMapping(value = "/save")
-    @ApiIgnore
     public ResponseEntity<?> save(@RequestBody
-    DiscountsDTO discountsDTO) {
-        log.debug("Request to save Discounts: {}", discountsDTO);
+    ShoppingCarDTO shoppingCarDTO) {
+        log.debug("Request to save ShoppingCar: {}", shoppingCarDTO);
 
         try {
-            Discounts discounts = discountsMapper.discountsDTOToDiscounts(discountsDTO);
-            discounts = discountsService.save(discounts);
+            ShoppingCar shoppingCar = shoppingCarMapper.shoppingCarDTOToShoppingCar(shoppingCarDTO);
+            shoppingCar = shoppingCarService.save(shoppingCar);
 
             return ResponseEntity.ok()
-                                 .body(discountsMapper.discountsToDiscountsDTO(
-                    discounts));
+                                 .body(shoppingCarMapper.shoppingCarToShoppingCarDTO(
+                    shoppingCar));
         } catch (Exception e) {
             log.error(e.getMessage(), e);
 
@@ -92,18 +90,17 @@ public class DiscountsRestController {
     }
 
     @PutMapping(value = "/update")
-    @ApiIgnore
     public ResponseEntity<?> update(@RequestBody
-    DiscountsDTO discountsDTO) {
-        log.debug("Request to update Discounts: {}", discountsDTO);
+    ShoppingCarDTO shoppingCarDTO) {
+        log.debug("Request to update ShoppingCar: {}", shoppingCarDTO);
 
         try {
-            Discounts discounts = discountsMapper.discountsDTOToDiscounts(discountsDTO);
-            discounts = discountsService.update(discounts);
+            ShoppingCar shoppingCar = shoppingCarMapper.shoppingCarDTOToShoppingCar(shoppingCarDTO);
+            shoppingCar = shoppingCarService.update(shoppingCar);
 
             return ResponseEntity.ok()
-                                 .body(discountsMapper.discountsToDiscountsDTO(
-                    discounts));
+                                 .body(shoppingCarMapper.shoppingCarToShoppingCarDTO(
+                    shoppingCar));
         } catch (Exception e) {
             log.error(e.getMessage(), e);
 
@@ -111,16 +108,15 @@ public class DiscountsRestController {
         }
     }
 
-    @DeleteMapping(value = "/delete/{discountId}")
-    @ApiIgnore
-    public ResponseEntity<?> delete(@PathVariable("discountId")
-    Long discountId) throws Exception {
-        log.debug("Request to delete Discounts");
+    @DeleteMapping(value = "/delete/{cartId}")
+    public ResponseEntity<?> delete(@PathVariable("cartId")
+    Long cartId) throws Exception {
+        log.debug("Request to delete ShoppingCar");
 
         try {
-            Discounts discounts = discountsService.findById(discountId).get();
+            ShoppingCar shoppingCar = shoppingCarService.findById(cartId).get();
 
-            discountsService.delete(discounts);
+            shoppingCarService.delete(shoppingCar);
 
             return ResponseEntity.ok().build();
         } catch (Exception e) {
@@ -133,6 +129,6 @@ public class DiscountsRestController {
     @GetMapping(value = "/count")
     @ApiIgnore
     public ResponseEntity<?> count() {
-        return ResponseEntity.ok().body(discountsService.count());
+        return ResponseEntity.ok().body(shoppingCarService.count());
     }
 }

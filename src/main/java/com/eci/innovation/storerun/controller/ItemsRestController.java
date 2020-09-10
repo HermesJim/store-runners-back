@@ -5,6 +5,7 @@ import com.eci.innovation.storerun.dto.ItemsDTO;
 import com.eci.innovation.storerun.mapper.ItemsMapper;
 import com.eci.innovation.storerun.service.ItemsService;
 
+import io.swagger.annotations.Api;
 import springfox.documentation.annotations.ApiIgnore;
 
 import org.slf4j.Logger;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/items")
 @CrossOrigin(origins = "*")
+@Api(tags = "Items", description = "Services to get Store Runners Items Data")
 public class ItemsRestController {
     private static final Logger log = LoggerFactory.getLogger(ItemsRestController.class);
     @Autowired

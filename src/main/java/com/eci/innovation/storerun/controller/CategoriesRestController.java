@@ -3,10 +3,14 @@ package com.eci.innovation.storerun.controller;
 import com.eci.innovation.storerun.domain.*;
 import com.eci.innovation.storerun.dto.CategoriesDTO;
 import com.eci.innovation.storerun.mapper.CategoriesMapper;
+import com.eci.innovation.storerun.mapper.DiscountsMapper;
 import com.eci.innovation.storerun.service.CategoriesService;
 
 import io.swagger.annotations.Api;
 import springfox.documentation.annotations.ApiIgnore;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hibernate.validator.internal.IgnoreForbiddenApisErrors;
 import org.slf4j.Logger;
@@ -26,114 +30,133 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
 @RequestMapping("/api/categories")
 @CrossOrigin(origins = "*")
-@Api(value = "Categories", description = "Services to get Store Runners Categories Data")
+@Api(tags = "Categories", description = "Services to get Store Runners Categories Data")
 public class CategoriesRestController {
-    private static final Logger log = LoggerFactory.getLogger(CategoriesRestController.class);
-    @Autowired
-    private CategoriesService categoriesService;
-    @Autowired
-    private CategoriesMapper categoriesMapper;
+	private static final Logger log = LoggerFactory.getLogger(CategoriesRestController.class);
+	@Autowired
+	private CategoriesService categoriesService;
+	@Autowired
+	private CategoriesMapper categoriesMapper;
+	@Autowired
+	private DiscountsMapper discountsMapper;
 
-    @GetMapping(value = "/findById/{categoryId}")
-    public ResponseEntity<?> findById(
-        @PathVariable("categoryId")
-    Long categoryId) {
-        log.debug("Request to findById() Categories");
+	@GetMapping(value = "/findById/{categoryId}")
+	public ResponseEntity<?> findById(@PathVariable("categoryId") Long categoryId) {
+		log.debug("Request to findById() Categories");
 
-        try {
-            Categories categories = categoriesService.findById(categoryId).get();
+		try {
+			Categories categories = categoriesService.findById(categoryId).get();
 
-            return ResponseEntity.ok()
-                                 .body(categoriesMapper.categoriesToCategoriesDTO(
-                    categories));
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
+			return ResponseEntity.ok().body(categoriesMapper.categoriesToCategoriesDTO(categories));
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
 
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
 
-    @GetMapping(value = "/findAll")
-    public ResponseEntity<?> findAll() {
-        log.debug("Request to findAll() Categories");
+	@GetMapping(value = "/findDiscountsById/{categoryId}")
+	public ResponseEntity<?> findDiscountsById(@PathVariable("categoryId") Long categoryId) {
+		log.debug("Request to findDiscountsById() Categories");
 
-        try {
-            return ResponseEntity.ok()
-                                 .body(categoriesMapper.listCategoriesToListCategoriesDTO(
-                    categoriesService.findAll()));
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
+		try {
+			Categories categories = categoriesService.findById(categoryId).get();
 
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-    
-    @PostMapping(value = "/save")
-    @ApiIgnore
-    public ResponseEntity<?> save(@RequestBody
-    CategoriesDTO categoriesDTO) {
-        log.debug("Request to save Categories: {}", categoriesDTO);
+			List<Items> items = categories.getItemses();
+			List<Discounts> discounts = new ArrayList<>();
 
-        try {
-            Categories categories = categoriesMapper.categoriesDTOToCategories(categoriesDTO);
-            categories = categoriesService.save(categories);
+			for (Items item : items) {
+				if (item.getDiscountses() != null && !item.getDiscountses().isEmpty()) {
+					discounts.add(item.getDiscountses().get(0));
+				}
 
-            return ResponseEntity.ok()
-                                 .body(categoriesMapper.categoriesToCategoriesDTO(
-                    categories));
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
+			}
 
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+			if (discounts != null && !discounts.isEmpty()) {
+				return ResponseEntity.ok().body(discountsMapper.listDiscountsToListDiscountsDTO(discounts));
+			} else {
+				return (ResponseEntity<?>) ResponseEntity.noContent();
+			}
 
-    @PutMapping(value = "/update")
-    @ApiIgnore
-    public ResponseEntity<?> update(@RequestBody
-    CategoriesDTO categoriesDTO) {
-        log.debug("Request to update Categories: {}", categoriesDTO);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
 
-        try {
-            Categories categories = categoriesMapper.categoriesDTOToCategories(categoriesDTO);
-            categories = categoriesService.update(categories);
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
 
-            return ResponseEntity.ok()
-                                 .body(categoriesMapper.categoriesToCategoriesDTO(
-                    categories));
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
+	@GetMapping(value = "/findAll")
+	public ResponseEntity<?> findAll() {
+		log.debug("Request to findAll() Categories");
 
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+		try {
+			return ResponseEntity.ok()
+					.body(categoriesMapper.listCategoriesToListCategoriesDTO(categoriesService.findAll()));
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
 
-    @DeleteMapping(value = "/delete/{categoryId}")
-    @ApiIgnore
-    public ResponseEntity<?> delete(@PathVariable("categoryId")
-    Long categoryId) throws Exception {
-        log.debug("Request to delete Categories");
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
 
-        try {
-            Categories categories = categoriesService.findById(categoryId).get();
+	@PostMapping(value = "/save")
+	@ApiIgnore
+	public ResponseEntity<?> save(@RequestBody CategoriesDTO categoriesDTO) {
+		log.debug("Request to save Categories: {}", categoriesDTO);
 
-            categoriesService.delete(categories);
+		try {
+			Categories categories = categoriesMapper.categoriesDTOToCategories(categoriesDTO);
+			categories = categoriesService.save(categories);
 
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
+			return ResponseEntity.ok().body(categoriesMapper.categoriesToCategoriesDTO(categories));
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
 
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
 
-    @GetMapping(value = "/count")
-    @ApiIgnore
-    public ResponseEntity<?> count() {
-        return ResponseEntity.ok().body(categoriesService.count());
-    }
+	@PutMapping(value = "/update")
+	@ApiIgnore
+	public ResponseEntity<?> update(@RequestBody CategoriesDTO categoriesDTO) {
+		log.debug("Request to update Categories: {}", categoriesDTO);
+
+		try {
+			Categories categories = categoriesMapper.categoriesDTOToCategories(categoriesDTO);
+			categories = categoriesService.update(categories);
+
+			return ResponseEntity.ok().body(categoriesMapper.categoriesToCategoriesDTO(categories));
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
+	@DeleteMapping(value = "/delete/{categoryId}")
+	@ApiIgnore
+	public ResponseEntity<?> delete(@PathVariable("categoryId") Long categoryId) throws Exception {
+		log.debug("Request to delete Categories");
+
+		try {
+			Categories categories = categoriesService.findById(categoryId).get();
+
+			categoriesService.delete(categories);
+
+			return ResponseEntity.ok().build();
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
+	@GetMapping(value = "/count")
+	@ApiIgnore
+	public ResponseEntity<?> count() {
+		return ResponseEntity.ok().body(categoriesService.count());
+	}
 }

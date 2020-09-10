@@ -1,6 +1,5 @@
 package com.eci.innovation.storerun.dto;
 
-import com.eci.innovation.storerun.domain.Discounts;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -11,9 +10,8 @@ import org.slf4j.LoggerFactory;
 import java.io.Serializable;
 
 import java.sql.*;
-import java.util.ArrayList;
+
 import java.util.Date;
-import java.util.List;
 
 
 /**
@@ -21,44 +19,35 @@ import java.util.List;
 * www.zathuracode.org
 *
 */
-public class ItemsDTO implements Serializable {
+public class ShoppingCarDTO implements Serializable {
     private static final long serialVersionUID = 1L;
-    private static final Logger log = LoggerFactory.getLogger(ItemsDTO.class);
-    private String description;
-    private Long itemId;
+    private static final Logger log = LoggerFactory.getLogger(ShoppingCarDTO.class);
+    private Long cartId;
+    private Long shop_categoryId;
+	private String description;
     private String itemNumber;
     private Long itemQuantity;
     private String name;
-    private Double price;
     private Double posX;
 	private Double posY;
 	private Long position;
+    private Double price;
     private String webImage;
-    private Long item_categoryId;
-    private List<DiscountsDTO> discountses = new ArrayList<DiscountsDTO>(0);
 
-    public List<DiscountsDTO> getDiscountses() {
-		return discountses;
-	}
+    public Long getCartId() {
+        return cartId;
+    }
 
-	public void setDiscountses(List<DiscountsDTO> discountses) {
-		this.discountses = discountses;
-	}
+    public void setCartId(Long cartId) {
+        this.cartId = cartId;
+    }
 
-	public String getDescription() {
+    public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Long getItemId() {
-        return itemId;
-    }
-
-    public void setItemId(Long itemId) {
-        this.itemId = itemId;
     }
 
     public String getItemNumber() {
@@ -85,23 +74,39 @@ public class ItemsDTO implements Serializable {
         this.name = name;
     }
 
+    public Long getPosition() {
+        return position;
+    }
+
+    public void setPosition(Long position) {
+        this.position = position;
+    }
+    
     public Double getPrice() {
         return price;
     }
 
     public void setPrice(Double price) {
         this.price = price;
-    }       
+    }
 
-	public String getWebImage() {
-		return webImage;
+    public String getWebImage() {
+        return webImage;
+    }
+
+    public void setWebImage(String webImage) {
+        this.webImage = webImage;
+    }
+    
+    public Long getShop_categoryId() {
+		return shop_categoryId;
 	}
 
-	public void setWebImage(String webImage) {
-		this.webImage = webImage;
-	}	
+	public void setShop_categoryId(Long shop_categoryId) {
+		this.shop_categoryId = shop_categoryId;
+	}
 
-	public Double getPosX() {
+    public Double getPosX() {
 		return posX;
 	}
 
@@ -115,22 +120,6 @@ public class ItemsDTO implements Serializable {
 
 	public void setPosY(Double posY) {
 		this.posY = posY;
-	}
-
-	public Long getPosition() {
-		return position;
-	}
-
-	public void setPosition(Long position) {
-		this.position = position;
-	}
-
-	public Long getItem_categoryId() {
-		return item_categoryId;
-	}
-
-	public void setItem_categoryId(Long item_categoryId) {
-		this.item_categoryId = item_categoryId;
 	}
 
 	@Override

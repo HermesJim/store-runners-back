@@ -20,8 +20,10 @@ import java.util.List;
 */
 @Mapper
 public interface ItemsMapper {
+	@Mapping(source = "categories.categoryId", target = "item_categoryId")
     public ItemsDTO itemsToItemsDTO(Items items) throws Exception;
 
+	@Mapping(source = "item_categoryId", target = "categories.categoryId")
     public Items itemsDTOToItems(ItemsDTO itemsDTO) throws Exception;
 
     public List<ItemsDTO> listItemsToListItemsDTO(List<Items> itemss)

@@ -1,8 +1,6 @@
 package com.eci.innovation.storerun.domain;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.*;
 
@@ -13,46 +11,46 @@ import javax.validation.constraints.*;
  *
  */
 @Entity
-@Table(name = "items", schema = "shoprun")
-public class Items implements java.io.Serializable {
+@Table(name = "shopping_car", schema = "shoprun")
+public class ShoppingCar implements java.io.Serializable {
 	@NotNull
-	private Long itemId;
+	private Long cartId;
 	@NotNull
 	private Categories categories;
 	private String description;
 	private String itemNumber;
 	private Long itemQuantity;
 	private String name;
-	private Double price;
+	private Long position;
 	private Double posX;
 	private Double posY;
-	private Long position;
+	private Double price;
 	private String webImage;
-	private List<Discounts> discountses = new ArrayList<Discounts>(0);
 
-	public Items() {
+	public ShoppingCar() {
 	}
 
-	public Items(Long itemId, Categories categories, String description, List<Discounts> discountses, String itemNumber,
-			Long itemQuantity, String name, Double price) {
-		this.itemId = itemId;
+	public ShoppingCar(Long cartId, Categories categories, String description, String itemNumber, Long itemQuantity,
+			String name, Long position, String positionVector, Double price, String webImage) {
+		this.cartId = cartId;
 		this.categories = categories;
 		this.description = description;
 		this.itemNumber = itemNumber;
 		this.itemQuantity = itemQuantity;
 		this.name = name;
+		this.position = position;
 		this.price = price;
-		this.discountses = discountses;
+		this.webImage = webImage;
 	}
 
 	@Id
-	@Column(name = "item_id", unique = true, nullable = false)
-	public Long getItemId() {
-		return this.itemId;
+	@Column(name = "cart_id", unique = true, nullable = false)
+	public Long getCartId() {
+		return this.cartId;
 	}
 
-	public void setItemId(Long itemId) {
-		this.itemId = itemId;
+	public void setCartId(Long cartId) {
+		this.cartId = cartId;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -101,6 +99,15 @@ public class Items implements java.io.Serializable {
 		this.name = name;
 	}
 
+	@Column(name = "position")
+	public Long getPosition() {
+		return this.position;
+	}
+
+	public void setPosition(Long position) {
+		this.position = position;
+	}
+
 	@Column(name = "price")
 	public Double getPrice() {
 		return this.price;
@@ -112,7 +119,7 @@ public class Items implements java.io.Serializable {
 
 	@Column(name = "web_image")
 	public String getWebImage() {
-		return webImage;
+		return this.webImage;
 	}
 
 	public void setWebImage(String webImage) {
@@ -135,23 +142,5 @@ public class Items implements java.io.Serializable {
 
 	public void setPosY(Double posY) {
 		this.posY = posY;
-	}
-
-	@Column(name = "position")
-	public Long getPosition() {
-		return position;
-	}
-
-	public void setPosition(Long position) {
-		this.position = position;
-	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "items")
-	public List<Discounts> getDiscountses() {
-		return this.discountses;
-	}
-
-	public void setDiscountses(List<Discounts> discountses) {
-		this.discountses = discountses;
 	}
 }
