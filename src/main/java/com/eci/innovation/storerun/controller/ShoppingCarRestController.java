@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.ResponseEntity;
-
+import org.springframework.http.ResponseEntity.BodyBuilder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -81,11 +81,20 @@ public class ShoppingCarRestController {
 
         try {
             ShoppingCar shoppingCar = shoppingCarMapper.shoppingCarDTOToShoppingCar(shoppingCarDTO);
-            shoppingCar = shoppingCarService.save(shoppingCar);
+            
+            
+            if(shoppingCar.getItemQuantity() != null && shoppingCar.getItemQuantity() > 0) {
+            	 shoppingCar = shoppingCarService.save(shoppingCar);
 
-            return ResponseEntity.ok()
-                                 .body(shoppingCarMapper.shoppingCarToShoppingCarDTO(
-                    shoppingCar));
+                 return ResponseEntity.ok()
+                                      .body(shoppingCarMapper.shoppingCarToShoppingCarDTO(
+                         shoppingCar));
+            }else {
+            	
+            	return ((BodyBuilder) ResponseEntity.noContent()).body(new String("Item Quantity must be greater than 0 "));
+            }
+            
+           
         } catch (Exception e) {
             log.error(e.getMessage(), e);
 
@@ -119,12 +128,19 @@ public class ShoppingCarRestController {
         log.debug("Request to update ShoppingCar: {}", shoppingCarDTO);
 
         try {
-            ShoppingCar shoppingCar = shoppingCarMapper.shoppingCarDTOToShoppingCar(shoppingCarDTO);
-            shoppingCar = shoppingCarService.update(shoppingCar);
+            ShoppingCar shoppingCar = shoppingCarMapper.shoppingCarDTOToShoppingCar(shoppingCarDTO);       
 
-            return ResponseEntity.ok()
-                                 .body(shoppingCarMapper.shoppingCarToShoppingCarDTO(
-                    shoppingCar));
+            if(shoppingCar.getItemQuantity() != null && shoppingCar.getItemQuantity() > 0) {
+            	 shoppingCar = shoppingCarService.update(shoppingCar);
+
+                 return ResponseEntity.ok()
+                                      .body(shoppingCarMapper.shoppingCarToShoppingCarDTO(
+                         shoppingCar));
+            }else {
+            	
+            	return ((BodyBuilder) ResponseEntity.noContent()).body(new String("Item Quantity must be greater than 0 "));
+            }
+
         } catch (Exception e) {
             log.error(e.getMessage(), e);
 

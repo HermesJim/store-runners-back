@@ -22,6 +22,7 @@ public class Discounts implements java.io.Serializable {
     private String description;
     private String discountNumber;
     private Long discountPercent;
+    private String webImage;
     private String name;
 
     public Discounts() {
@@ -92,4 +93,13 @@ public class Discounts implements java.io.Serializable {
     public void setName(String name) {
         this.name = name;
     }
+    
+    @Column(name = "web_image")
+	public String getWebImage() {
+		return webImage;
+	}
+
+	public void setWebImage(String webImage) {
+		this.webImage = webImage;
+	}
 }

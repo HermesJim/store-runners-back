@@ -27,6 +27,7 @@ public class DiscountsDTO implements Serializable {
     private String discountNumber;
     private Long discountPercent;
     private String name;
+    private String webImage;
     private Long itemId_Items;
 
     public String getDescription() {
@@ -76,6 +77,14 @@ public class DiscountsDTO implements Serializable {
     public void setItemId_Items(Long itemId_Items) {
         this.itemId_Items = itemId_Items;
     }
+    
+    public String getWebImage() {
+		return webImage;
+	}
+
+	public void setWebImage(String webImage) {
+		this.webImage = webImage;
+	}
 
     @Override
     public String toString() {
